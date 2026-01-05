@@ -5,7 +5,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { AuthProvider } from './context/AuthContext';
 
 // Common Pages
-import Home from './common/Home';
+// import Home from './common/Home'; // Original Home
+import Home from './common/LandingPage'; // Premium Landing Page
 import NotFound from './common/NotFound';
 
 // Public Pages
@@ -117,131 +118,131 @@ function App() {
     <ChakraProvider>
       <AuthProvider>
         <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar />
-          <main className="flex-1">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<CompleteAboutPage />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<ContactUs />} />
-              <Route path="/service-info/:serviceType" element={<ServiceInfo />} />
-              
-              {/* Phase 1: Customer Routes */}
-        <Route path="/boat-catalog" element={<BoatCatalog />} />
-        <Route path="/boat-details/:id" element={<BoatDetailsPage />} />
-        <Route path="/boat-reviews/:id" element={<UserReviewsPage />} />
-        <Route path="/book-appointment" element={<BookAppointment />} />
-        <Route path="/my-appointments" element={<CustomerAppointmentsPage />} />
-        <Route path="/contact-form" element={<ContactPage />} />
-        <Route path="/reviews" element={<UserReviewsPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              
-              {/* Protected Routes */}
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              
-              {/* Customer Routes */}
-              <Route path="/boat-rides" element={<ProtectedRoute><BoatRideBooking /></ProtectedRoute>} />
-              <Route path="/ride-confirmation/:id" element={<ProtectedRoute><RideConfirmation /></ProtectedRoute>} />
-              <Route path="/my-rides" element={<ProtectedRoute><MyRides /></ProtectedRoute>} />
-              <Route path="/payment-summary" element={<ProtectedRoute><PaymentSummary /></ProtectedRoute>} />
-              
-              {/* New Boat Service Routes */}
-              <Route path="/customer" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
-              <Route path="/booking" element={<ProtectedRoute><BookingRequestPage /></ProtectedRoute>} />
-              <Route path="/booking-confirmation" element={<ProtectedRoute><BookingConfirmationPage /></ProtectedRoute>} />
-              
-              {/* Employee Routes */}
-              <Route path="/employee" element={<ProtectedRoute><EmployeeDashboard /></ProtectedRoute>} />
-              <Route path="/employee/bookings" element={<ProtectedRoute><BookingManagementPage /></ProtectedRoute>} />
-              <Route path="/employee/packages" element={<ProtectedRoute><PackageManagementPage /></ProtectedRoute>} />
-              <Route path="/repair-service" element={<ProtectedRoute><RepairService /></ProtectedRoute>} />
-              <Route path="/repair-service/edit/:id" element={<ProtectedRoute><RepairService /></ProtectedRoute>} />
-              <Route path="/boat-purchase" element={<ProtectedRoute><BoatPurchase /></ProtectedRoute>} />
-              <Route path="/spare-parts" element={<ProtectedRoute><ShopCategory /></ProtectedRoute>} />
-              <Route path="/spare-parts/:id" element={<ProtectedRoute><ProductDetailsPage /></ProtectedRoute>} />
-              <Route path="/cart" element={<ProtectedRoute requiredRole="customer"><CartItems /></ProtectedRoute>} />
-              <Route path="/checkout" element={<ProtectedRoute requiredRole="customer"><CheckoutPage /></ProtectedRoute>} />
-              <Route path="/order-confirmation/:orderId" element={<ProtectedRoute requiredRole="customer"><OrderConfirmation /></ProtectedRoute>} />
-              <Route path="/my-orders" element={<ProtectedRoute requiredRole="customer"><OrderTracking /></ProtectedRoute>} />
-              <Route path="/booking-confirmation/:bookingId" element={<ProtectedRoute><BookingConfirmation /></ProtectedRoute>} />
-              <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
-              <Route path="/my-repairs" element={<ProtectedRoute><MyRepairs /></ProtectedRoute>} />
-              <Route path="/repair-details/:id" element={<ProtectedRoute><RepairDetails /></ProtectedRoute>} />
-              <Route path="/repair-payment/:id" element={<ProtectedRoute><RepairPayment /></ProtectedRoute>} />
-              <Route path="/service-history" element={<ProtectedRoute><ServiceHistory /></ProtectedRoute>} />
-              <Route path="/payment-history" element={<ProtectedRoute><PaymentHistory /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><CustomerProfile /></ProtectedRoute>} />
-              
-              {/* Employee Routes */}
-              <Route path="/employee/repair-management" element={<ProtectedRoute requiredRole="employee"><RepairManagementList /></ProtectedRoute>} />
-              <Route path="/employee/repair-management/:id" element={<ProtectedRoute requiredRole="employee"><RepairManagementDetail /></ProtectedRoute>} />
-              <Route path="/employee/ride-management" element={<ProtectedRoute requiredRole="employee"><RideManagement /></ProtectedRoute>} />
-              <Route path="/employee/purchase-management" element={<ProtectedRoute requiredRole="employee"><PurchaseManagement /></ProtectedRoute>} />
-              {/* <Route path="/employee/spare-parts-management" element={<ProtectedRoute requiredRole="employee"><SparePartsManagement /></ProtectedRoute>} /> */}
-              <Route path="/inventory" element={<ProtectedRoute requiredRole="employee"><InventoryManagement /></ProtectedRoute>} />
-              <Route path="/inventory/report" element={<ProtectedRoute requiredRole="employee"><InventoryReport /></ProtectedRoute>} />
-              <Route path="/inventory/create" element={<ProtectedRoute requiredRole="employee"><CreateProduct /></ProtectedRoute>} />
-              <Route path="/inventory/edit/:id" element={<ProtectedRoute requiredRole="employee"><EditProduct /></ProtectedRoute>} />
-              <Route path="/employee/profile" element={<ProtectedRoute requiredRole="employee"><EmployeeProfile /></ProtectedRoute>} />
-              <Route path="/employee/orders" element={<ProtectedRoute requiredRole="employee"><EmployeeOrderManagement /></ProtectedRoute>} />
-            <Route path="/employee/orders/:orderId" element={<ProtectedRoute requiredRole="employee"><OrderDetails /></ProtectedRoute>} />
-              
-              {/* Admin Routes */}
-              <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/admin/create-employee" element={<ProtectedRoute requiredRole="admin"><CreateEmployee /></ProtectedRoute>} />
-              <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><UserManagementList /></ProtectedRoute>} />
-              <Route path="/admin/users/:id" element={<ProtectedRoute requiredRole="admin"><UserDetails /></ProtectedRoute>} />
-              <Route path="/admin/users/:id/edit" element={<ProtectedRoute requiredRole="admin"><UserDetails /></ProtectedRoute>} />
-              <Route path="/admin/profile" element={<ProtectedRoute requiredRole="admin"><AdminProfile /></ProtectedRoute>} />
-              <Route path="/admin/user-analytics" element={<ProtectedRoute requiredRole="admin"><UserAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/repair-analytics" element={<ProtectedRoute requiredRole="admin"><RepairAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/boat-rides-analytics" element={<ProtectedRoute requiredRole="admin"><BoatRidesAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/sales-visit-analytics" element={<ProtectedRoute requiredRole="admin"><SalesVisitAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/inventory-analytics" element={<ProtectedRoute requiredRole="admin"><InventoryAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/spare-parts-sales-analytics" element={<ProtectedRoute requiredRole="admin"><SparePartsSalesAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/financial-analytics" element={<ProtectedRoute requiredRole="admin"><FinancialAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/customer-analytics" element={<ProtectedRoute requiredRole="admin"><CustomerAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/operational-analytics" element={<ProtectedRoute requiredRole="admin"><OperationalAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/content-management" element={<ProtectedRoute requiredRole="admin"><AdminAboutPage /></ProtectedRoute>} />
-              <Route path="/admin/boat-management" element={<ProtectedRoute requiredRole={["employee", "admin"]}><BoatManagement /></ProtectedRoute>} />
-              <Route path="/admin/create" element={<ProtectedRoute requiredRole="admin"><CreatePage /></ProtectedRoute>} />
-              <Route path="/admin/appointment-management" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminAppointmentPage /></ProtectedRoute>} />
-              <Route path="/admin/chat-support" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminChatDashboard /></ProtectedRoute>} />
-              <Route path="/admin/reviews" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminAllReviewsPage /></ProtectedRoute>} />
-              <Route path="/admin/reviews/:id" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminReviewsPage /></ProtectedRoute>} />
-              <Route path="/admin/feedback" element={<ProtectedRoute requiredRole="admin"><AdminFeedback /></ProtectedRoute>} />
-              <Route path="/admin/analytics" element={<ProtectedRoute requiredRole="admin"><AdminAnalytics /></ProtectedRoute>} />
-              <Route path="/admin/orders" element={<ProtectedRoute requiredRole="admin"><AdminOrderManagement /></ProtectedRoute>} />
-              
-              {/* Employee Chat Routes */}
-              <Route path="/employee/chat-dashboard" element={<ProtectedRoute requiredRole={["employee", "admin"]}><EmployeeChatDashboard /></ProtectedRoute>} />
-              
-              {/* Customer Chat Routes */}
-              <Route path="/customer/chat" element={<ProtectedRoute requiredRole="customer"><CustomerChat /></ProtectedRoute>} />
-              
-              
-              
-              {/* 404 Route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-          <Toaster 
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-            }}
-          />
-        </div>
+          <div className="min-h-screen bg-gray-50">
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<CompleteAboutPage />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/service-info/:serviceType" element={<ServiceInfo />} />
+
+                {/* Phase 1: Customer Routes */}
+                <Route path="/boat-catalog" element={<BoatCatalog />} />
+                <Route path="/boat-details/:id" element={<BoatDetailsPage />} />
+                <Route path="/boat-reviews/:id" element={<UserReviewsPage />} />
+                <Route path="/book-appointment" element={<BookAppointment />} />
+                <Route path="/my-appointments" element={<CustomerAppointmentsPage />} />
+                <Route path="/contact-form" element={<ContactPage />} />
+                <Route path="/reviews" element={<UserReviewsPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+
+                {/* Protected Routes */}
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+
+                {/* Customer Routes */}
+                <Route path="/boat-rides" element={<ProtectedRoute><BoatRideBooking /></ProtectedRoute>} />
+                <Route path="/ride-confirmation/:id" element={<ProtectedRoute><RideConfirmation /></ProtectedRoute>} />
+                <Route path="/my-rides" element={<ProtectedRoute><MyRides /></ProtectedRoute>} />
+                <Route path="/payment-summary" element={<ProtectedRoute><PaymentSummary /></ProtectedRoute>} />
+
+                {/* New Boat Service Routes */}
+                <Route path="/customer" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
+                <Route path="/booking" element={<ProtectedRoute><BookingRequestPage /></ProtectedRoute>} />
+                <Route path="/booking-confirmation" element={<ProtectedRoute><BookingConfirmationPage /></ProtectedRoute>} />
+
+                {/* Employee Routes */}
+                <Route path="/employee" element={<ProtectedRoute><EmployeeDashboard /></ProtectedRoute>} />
+                <Route path="/employee/bookings" element={<ProtectedRoute><BookingManagementPage /></ProtectedRoute>} />
+                <Route path="/employee/packages" element={<ProtectedRoute><PackageManagementPage /></ProtectedRoute>} />
+                <Route path="/repair-service" element={<ProtectedRoute><RepairService /></ProtectedRoute>} />
+                <Route path="/repair-service/edit/:id" element={<ProtectedRoute><RepairService /></ProtectedRoute>} />
+                <Route path="/boat-purchase" element={<ProtectedRoute><BoatPurchase /></ProtectedRoute>} />
+                <Route path="/spare-parts" element={<ProtectedRoute><ShopCategory /></ProtectedRoute>} />
+                <Route path="/spare-parts/:id" element={<ProtectedRoute><ProductDetailsPage /></ProtectedRoute>} />
+                <Route path="/cart" element={<ProtectedRoute requiredRole="customer"><CartItems /></ProtectedRoute>} />
+                <Route path="/checkout" element={<ProtectedRoute requiredRole="customer"><CheckoutPage /></ProtectedRoute>} />
+                <Route path="/order-confirmation/:orderId" element={<ProtectedRoute requiredRole="customer"><OrderConfirmation /></ProtectedRoute>} />
+                <Route path="/my-orders" element={<ProtectedRoute requiredRole="customer"><OrderTracking /></ProtectedRoute>} />
+                <Route path="/booking-confirmation/:bookingId" element={<ProtectedRoute><BookingConfirmation /></ProtectedRoute>} />
+                <Route path="/my-bookings" element={<ProtectedRoute><MyBookings /></ProtectedRoute>} />
+                <Route path="/my-repairs" element={<ProtectedRoute><MyRepairs /></ProtectedRoute>} />
+                <Route path="/repair-details/:id" element={<ProtectedRoute><RepairDetails /></ProtectedRoute>} />
+                <Route path="/repair-payment/:id" element={<ProtectedRoute><RepairPayment /></ProtectedRoute>} />
+                <Route path="/service-history" element={<ProtectedRoute><ServiceHistory /></ProtectedRoute>} />
+                <Route path="/payment-history" element={<ProtectedRoute><PaymentHistory /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><CustomerProfile /></ProtectedRoute>} />
+
+                {/* Employee Routes */}
+                <Route path="/employee/repair-management" element={<ProtectedRoute requiredRole="employee"><RepairManagementList /></ProtectedRoute>} />
+                <Route path="/employee/repair-management/:id" element={<ProtectedRoute requiredRole="employee"><RepairManagementDetail /></ProtectedRoute>} />
+                <Route path="/employee/ride-management" element={<ProtectedRoute requiredRole="employee"><RideManagement /></ProtectedRoute>} />
+                <Route path="/employee/purchase-management" element={<ProtectedRoute requiredRole="employee"><PurchaseManagement /></ProtectedRoute>} />
+                {/* <Route path="/employee/spare-parts-management" element={<ProtectedRoute requiredRole="employee"><SparePartsManagement /></ProtectedRoute>} /> */}
+                <Route path="/inventory" element={<ProtectedRoute requiredRole="employee"><InventoryManagement /></ProtectedRoute>} />
+                <Route path="/inventory/report" element={<ProtectedRoute requiredRole="employee"><InventoryReport /></ProtectedRoute>} />
+                <Route path="/inventory/create" element={<ProtectedRoute requiredRole="employee"><CreateProduct /></ProtectedRoute>} />
+                <Route path="/inventory/edit/:id" element={<ProtectedRoute requiredRole="employee"><EditProduct /></ProtectedRoute>} />
+                <Route path="/employee/profile" element={<ProtectedRoute requiredRole="employee"><EmployeeProfile /></ProtectedRoute>} />
+                <Route path="/employee/orders" element={<ProtectedRoute requiredRole="employee"><EmployeeOrderManagement /></ProtectedRoute>} />
+                <Route path="/employee/orders/:orderId" element={<ProtectedRoute requiredRole="employee"><OrderDetails /></ProtectedRoute>} />
+
+                {/* Admin Routes */}
+                <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
+                <Route path="/admin/create-employee" element={<ProtectedRoute requiredRole="admin"><CreateEmployee /></ProtectedRoute>} />
+                <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><UserManagementList /></ProtectedRoute>} />
+                <Route path="/admin/users/:id" element={<ProtectedRoute requiredRole="admin"><UserDetails /></ProtectedRoute>} />
+                <Route path="/admin/users/:id/edit" element={<ProtectedRoute requiredRole="admin"><UserDetails /></ProtectedRoute>} />
+                <Route path="/admin/profile" element={<ProtectedRoute requiredRole="admin"><AdminProfile /></ProtectedRoute>} />
+                <Route path="/admin/user-analytics" element={<ProtectedRoute requiredRole="admin"><UserAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/repair-analytics" element={<ProtectedRoute requiredRole="admin"><RepairAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/boat-rides-analytics" element={<ProtectedRoute requiredRole="admin"><BoatRidesAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/sales-visit-analytics" element={<ProtectedRoute requiredRole="admin"><SalesVisitAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/inventory-analytics" element={<ProtectedRoute requiredRole="admin"><InventoryAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/spare-parts-sales-analytics" element={<ProtectedRoute requiredRole="admin"><SparePartsSalesAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/financial-analytics" element={<ProtectedRoute requiredRole="admin"><FinancialAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/customer-analytics" element={<ProtectedRoute requiredRole="admin"><CustomerAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/operational-analytics" element={<ProtectedRoute requiredRole="admin"><OperationalAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/content-management" element={<ProtectedRoute requiredRole="admin"><AdminAboutPage /></ProtectedRoute>} />
+                <Route path="/admin/boat-management" element={<ProtectedRoute requiredRole={["employee", "admin"]}><BoatManagement /></ProtectedRoute>} />
+                <Route path="/admin/create" element={<ProtectedRoute requiredRole="admin"><CreatePage /></ProtectedRoute>} />
+                <Route path="/admin/appointment-management" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminAppointmentPage /></ProtectedRoute>} />
+                <Route path="/admin/chat-support" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminChatDashboard /></ProtectedRoute>} />
+                <Route path="/admin/reviews" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminAllReviewsPage /></ProtectedRoute>} />
+                <Route path="/admin/reviews/:id" element={<ProtectedRoute requiredRole={["employee", "admin"]}><AdminReviewsPage /></ProtectedRoute>} />
+                <Route path="/admin/feedback" element={<ProtectedRoute requiredRole="admin"><AdminFeedback /></ProtectedRoute>} />
+                <Route path="/admin/analytics" element={<ProtectedRoute requiredRole="admin"><AdminAnalytics /></ProtectedRoute>} />
+                <Route path="/admin/orders" element={<ProtectedRoute requiredRole="admin"><AdminOrderManagement /></ProtectedRoute>} />
+
+                {/* Employee Chat Routes */}
+                <Route path="/employee/chat-dashboard" element={<ProtectedRoute requiredRole={["employee", "admin"]}><EmployeeChatDashboard /></ProtectedRoute>} />
+
+                {/* Customer Chat Routes */}
+                <Route path="/customer/chat" element={<ProtectedRoute requiredRole="customer"><CustomerChat /></ProtectedRoute>} />
+
+
+
+                {/* 404 Route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
+                },
+              }}
+            />
+          </div>
         </Router>
       </AuthProvider>
     </ChakraProvider>
