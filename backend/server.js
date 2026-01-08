@@ -42,7 +42,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 });
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 
 // Security middleware - protects against common vulnerabilities
 app.use(helmet());
@@ -51,7 +51,7 @@ app.use(helmet());
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3002';
 console.log('🔧 CORS Configuration:', { frontendUrl, nodeEnv: process.env.NODE_ENV });
 app.use(cors({
-  origin: [frontendUrl],
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'],
   credentials: true
 }));
 
@@ -64,7 +64,7 @@ app.use(morgan('combined'));
 
 // Basic health check route
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ 
+  res.status(200).json({
     message: 'Boat Service Management API is running',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
@@ -73,7 +73,7 @@ app.get('/api/health', (req, res) => {
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'Welcome to Boat Service Management System API',
     version: '1.0.0',
     endpoints: {
@@ -86,7 +86,7 @@ app.get('/', (req, res) => {
 // API routes
 
 // user routes 
-app.use('/api/users', userRoutes );
+app.use('/api/users', userRoutes);
 
 // boat repair routes
 app.use('/api/boat-repairs', boatRepairRoutes);
@@ -139,7 +139,7 @@ app.use('/api/reports', reportRoutes);
 // Global error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Something went wrong!',
     message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
@@ -163,22 +163,22 @@ io.on('connection', (socket) => {
   // Send message
   socket.on('send-message', async (data) => {
     console.log('📨 Received message:', data);
-    
+
     // Check if user is blocked (only for user messages)
     if (data.sender === 'user') {
       try {
         const User = (await import('./models/userModel.js')).default;
         const Chat = (await import('./models/chat.model.js')).default;
-        
+
         // Get chat to find user email
         const chat = await Chat.findById(data.chatId);
         if (chat) {
           const user = await User.findOne({ email: chat.userEmail });
-          
+
           if (user && user.isBlocked) {
             console.log('🚫 Blocked user tried to send message:', chat.userEmail);
-            socket.emit('message-error', { 
-              error: 'You have been blocked from sending messages. Please contact support.' 
+            socket.emit('message-error', {
+              error: 'You have been blocked from sending messages. Please contact support.'
             });
             return;
           }
@@ -187,15 +187,15 @@ io.on('connection', (socket) => {
         console.error('Error checking user block status:', error);
       }
     }
-    
+
     // Broadcast to all users in the chat room (including sender)
     io.to(data.chatId).emit('receive-message', data);
     console.log(`💬 Message broadcasted in chat: ${data.chatId}`);
-    
+
     // Emit notification updates
     try {
       const Notification = (await import('./models/notification.model.js')).default;
-      
+
       if (data.sender === 'user') {
         // Notify admin/employee
         const adminNotification = await Notification.findOne({ userId: 'admin' });
@@ -256,7 +256,7 @@ io.on('connection', (socket) => {
     try {
       const Notification = (await import('./models/notification.model.js')).default;
       const notification = await Notification.findOne({ userId });
-      
+
       socket.emit('notifications-update', {
         unreadCount: notification ? notification.unreadCount : 0,
         lastReadAt: notification ? notification.lastReadAt : null
@@ -286,9 +286,9 @@ const startServer = async () => {
   try {
     // Connect to database first
     await connectDB();
-    
+
     // Migration completed - no longer needed
-    
+
     // Then start the server
     server.listen(PORT, () => {
       console.log(`🚢 Server running on port ${PORT}`);
