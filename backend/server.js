@@ -42,7 +42,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"]
   }
 });
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 10000;
 
 // Security middleware - protects against common vulnerabilities
 app.use(helmet());
@@ -71,16 +71,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Root route
+// Root route - simple heartbeat for Render
 app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to Boat Service Management System API',
-    version: '1.0.0',
-    endpoints: {
-      health: '/api/health',
-      docs: '/api/docs' // We'll add this later
-    }
-  });
+  res.status(200).send('OK');
 });
 
 // API routes
